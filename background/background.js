@@ -1,6 +1,3 @@
-let previousThemeBackground = null
-
-
 async function getActiveTab() {
     return await browser.tabs.query({ currentWindow: true, active: true })
 }
@@ -15,32 +12,30 @@ function getCSS(themeBackground) {
         }`
 }
 
-async function injectEditorBackgroundColor(themeBackground) {
+async function injectEditorBackgroundColor(oldThemeBackground, newThemeBackground) {
     const [tab] = await getActiveTab()
 
-    if (previousThemeBackground) {
+    if (oldThemeBackground) {
         await browser.scripting.removeCSS({
             target: { tabId: tab.id },
-            css: getCSS(previousThemeBackground),
+            css: getCSS(oldThemeBackground),
             origin: 'USER'
         })
     }
 
     await browser.scripting.insertCSS({
         target: { tabId: tab.id },
-        css: getCSS(themeBackground),
+        css: getCSS(newThemeBackground),
         origin: 'USER'
     })
-
-    previousThemeBackground = themeBackground
 }
 
-async function onMessage(request, sender, sendResponse) {
-    if (request.command === THEME_RESPONSE && request.theme) {
-        const themeBackground = request.theme.colors['editor.background']
-        await injectEditorBackgroundColor(themeBackground)
-    }
+async function onLocalStorageChange(changes) {
+    const oldThemeBackground = changes[THEME_BACKGROUND_KEY].oldValue
+    const newThemeBackground = changes[THEME_BACKGROUND_KEY].newValue
+
+    await injectEditorBackgroundColor(oldThemeBackground, newThemeBackground)
 }
 
 
-browser.runtime.onMessage.addListener(onMessage)
+browser.storage.local.onChanged.addListener(onLocalStorageChange)

@@ -17,13 +17,11 @@ function displayLoading() {
     themeSelector.disabled = false
 }
 
-function displayThemeName() {
-    const monacoTheme = localStorage.getItem(THEME_KEY)
-
+function displayThemeName(themeName) {
     errorMessage.style.display = 'none'
     loadingMessage.style.display = 'none'
     themeMessage.style.display = 'block'
-    selectedTheme.innerHTML = monacoTheme ?? 'None'
+    selectedTheme.innerHTML = themeName ?? 'None'
 }
 
 function displayError() {
@@ -61,19 +59,19 @@ async function executeThemeCommand(themeName) {
 }
 
 async function setTheme(themeName) {
-    const formattedTheme = formatThemeDisplayName(themeName)
+    const themeDisplayName = formatThemeDisplayName(themeSelector.value)
 
-    localStorage.setItem(THEME_KEY, formattedTheme)
-    await executeThemeCommand(formattedTheme)
-    displayThemeName()
+    await executeThemeCommand(themeDisplayName)
+    displayThemeName(themeDisplayName)
 }
 
 async function onLoad() {
     const [tab] = await getActiveTab()
+    const { [THEME_KEY]: themeName } = await browser.storage.local.get(THEME_KEY)
 
     if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
         displayLoading()
-        displayThemeName()
+        displayThemeName(themeName)
     } else {
         displayError()
     }

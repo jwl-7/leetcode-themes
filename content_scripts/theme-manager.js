@@ -9,9 +9,12 @@ async function sendThemeResponse(theme, themeName) {
         theme: theme,
         themeName: themeName,
     })
-    await browser.runtime.sendMessage({
-        command: THEME_RESPONSE,
-        theme: theme
+}
+
+async function storeTheme(themeName, themeBackground) {
+    await browser.storage.local.set({
+        [THEME_KEY]: themeName,
+        [THEME_BACKGROUND_KEY]: themeBackground
     })
 }
 
@@ -25,9 +28,12 @@ async function onMessage(event) {
         const themeListURL = browser.runtime.getURL('../themes/themelist.json')
         const theme = await getData(themeURL)
         const themeList = await getData(themeListURL)
-        const themeName = themeList[event.data.themeName]
+        const themeName = event.data.themeName
+        const rawThemeName = themeList[themeName]
+        const themeBackground = theme.colors['editor.background']
 
-        await sendThemeResponse(theme, themeName)
+        await storeTheme(themeName, themeBackground)
+        await sendThemeResponse(theme, rawThemeName)
     }
 }
 
