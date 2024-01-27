@@ -3,7 +3,7 @@ async function getData(url) {
     return response.json()
 }
 
-async function sendThemeResponse(theme, themeName) {
+function sendThemeResponse(theme, themeName) {
     window.postMessage({
         command: THEME_RESPONSE,
         theme: theme,
@@ -33,7 +33,7 @@ async function onMessage(event) {
         const themeBackground = theme.colors['editor.background']
 
         await storeTheme(themeName, themeBackground)
-        await sendThemeResponse(theme, rawThemeName)
+        sendThemeResponse(theme, rawThemeName)
     }
 }
 
