@@ -1,28 +1,38 @@
-function getActiveTab() {
-    return browser.tabs.query({ currentWindow: true, active: true })
+let previousThemeBackground = null
+
+
+async function getActiveTab() {
+    return await browser.tabs.query({ currentWindow: true, active: true })
 }
 
-function injectEditorBackgroundColor(themeBackground) {
-    const CSS = `
+function getCSS(themeBackground) {
+    return `
         .monaco-editor,
         .monaco-editor .inputarea.ime-input,
         .monaco-editor .margin,
         .monaco-editor .monaco-editor-background {
             background-color: ${themeBackground} !important;
         }`
+}
 
-    getActiveTab().then(([tab]) => {
-        browser.scripting.removeCSS({
+async function injectEditorBackgroundColor(themeBackground) {
+    const [tab] = await getActiveTab()
+
+    if (previousThemeBackground) {
+        await browser.scripting.removeCSS({
             target: { tabId: tab.id },
-            css: CSS,
+            css: getCSS(previousThemeBackground),
             origin: 'USER'
         })
-        browser.scripting.insertCSS({
-            target: { tabId: tab.id },
-            css: CSS,
-            origin: 'USER'
-        })
+    }
+
+    await browser.scripting.insertCSS({
+        target: { tabId: tab.id },
+        css: getCSS(themeBackground),
+        origin: 'USER'
     })
+
+    previousThemeBackground = themeBackground
 }
 
 function onMessage(request, sender, sendResponse) {
