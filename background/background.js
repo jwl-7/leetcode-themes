@@ -35,10 +35,10 @@ async function injectEditorBackgroundColor(themeBackground) {
     previousThemeBackground = themeBackground
 }
 
-function onMessage(request, sender, sendResponse) {
+async function onMessage(request, sender, sendResponse) {
     if (request.command === THEME_RESPONSE && request.theme) {
         const themeBackground = request.theme.colors['editor.background']
-        injectEditorBackgroundColor(themeBackground)
+        await injectEditorBackgroundColor(themeBackground)
     }
 }
 

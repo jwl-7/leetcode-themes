@@ -6,8 +6,8 @@ const selectedTheme = themeMessage.querySelector('#selected-theme')
 const themeSelector = document.getElementById('theme-selector')
 
 
-function getActiveTab() {
-    return browser.tabs.query({ currentWindow: true, active: true })
+async function getActiveTab() {
+    return await browser.tabs.query({ currentWindow: true, active: true })
 }
 
 function displayLoading() {
@@ -48,39 +48,39 @@ function sendThemeCommand(themeName) {
     })
 }
 
-function executeThemeCommand(themeName) {
-    getActiveTab().then(([tab]) => {
-        if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
-            browser.scripting.executeScript({
-                target: { tabId: tab.id },
-                func: sendThemeCommand,
-                args: [themeName]
-            })
-        }
-    })
+async function executeThemeCommand(themeName) {
+    const [tab] = await getActiveTab()
+
+    if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
+        await browser.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: sendThemeCommand,
+            args: [themeName]
+        })
+    }
 }
 
-function setTheme(themeName) {
+async function setTheme(themeName) {
     const formattedTheme = formatThemeDisplayName(themeName)
 
     localStorage.setItem(THEME_KEY, formattedTheme)
-    executeThemeCommand(formattedTheme)
+    await executeThemeCommand(formattedTheme)
     displayThemeName()
 }
 
-function onLoad() {
-    getActiveTab().then(([tab]) => {
-        if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
-            displayLoading()
-            displayThemeName()
-        } else {
-            displayError()
-        }
-    })
+async function onLoad() {
+    const [tab] = await getActiveTab()
+
+    if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
+        displayLoading()
+        displayThemeName()
+    } else {
+        displayError()
+    }
 }
 
-function onThemeChange() {
-    setTheme(themeSelector.value)
+async function onThemeChange() {
+    await setTheme(themeSelector.value)
 }
 
 

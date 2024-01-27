@@ -19,7 +19,7 @@ function applyTheme(themeName, theme) {
     }
 }
 
-function onMessage(event) {
+async function onMessage(event) {
     if (
         event.origin === BASE_URL &&
         event.data.command &&

@@ -1,14 +1,15 @@
-function getData(url) {
-    return fetch(url).then(response => response.json())
+async function getData(url) {
+    const response = await fetch(url)
+    return response.json()
 }
 
-function sendThemeResponse(theme, themeName) {
+async function sendThemeResponse(theme, themeName) {
     window.postMessage({
         command: THEME_RESPONSE,
         theme: theme,
         themeName: themeName,
     })
-    browser.runtime.sendMessage({
+    await browser.runtime.sendMessage({
         command: THEME_RESPONSE,
         theme: theme
     })
@@ -26,7 +27,7 @@ async function onMessage(event) {
         const themeList = await getData(themeListURL)
         const themeName = themeList[event.data.themeName]
 
-        sendThemeResponse(theme, themeName)
+        await sendThemeResponse(theme, themeName)
     }
 }
 
