@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Theme Converter</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/5.3.2/darkly/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/panda-syntax-dark.min.css">
+    <link rel="stylesheet" href="theme-converter.css">
+</head>
+
+<body class="bg-dark text-light">
+    <div class="container d-flex justify-content-center mt-4">
+        <div id="main-card" class="card border-secondary p-4 text-center">
+            <h1 class="display-3 mb-2">Theme Converter</h1>
+            <p class="text-warning lead">Convert VS Code Theme JSON -> Monaco Theme JSON</p>
+
+            <input id="theme-file-input" type="file" accept=".json" class="form-control-lg mb-3">
+            <button id="convert-theme" class="btn btn-lg btn-info btn-block mb-3">Convert Theme</button>
+
+            <div id="loading-spinner" class="d-none mb-3 d-flex align-items-center justify-content-center">
+                <div id="loader" class="d-none"></div>
+            </div>
+
+            <a id="download" class="d-none btn btn-lg btn-success btn-block mb-3">Download Converted Theme</a>
+
+            <div id="error-alert" class="d-none alert alert-dismissible alert-danger">
+                <strong>Error!</strong> Input must be VS Code Theme JSON
+                <button id="close-error-alert" class="btn-close" type="button" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <p id="copy-themelist-info" class="d-none text-warning fst-italic mb-0">
+            Paste in themes/themelist.json
+        </p>
+        <div class="position-relative">
+            <button
+                class="d-none btn btn-info position-absolute top-0 end-0 mt-1 me-1"
+                id="copy-themelist-code"
+                data-clipboard-target="#code-themelist">
+                Copy JSON
+            </button>
+            <pre id="code-themelist"></pre>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <p id="copy-popup-info" class="d-none text-warning fst-italic mb-0">
+            Paste in popup/popup.html
+        </p>
+        <div class="position-relative">
+            <button
+                class="d-none btn btn-info position-absolute top-0 end-0 mt-1 me-1"
+                id="copy-popup-code"
+                data-clipboard-target="#code-popup">
+                Copy HTML
+            </button>
+            <pre id="code-popup"></pre>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <p id="copy-json-info" class="d-none text-warning fst-italic mb-0">
+            Paste in themes/
+        </p>
+        <div class="position-relative">
+            <button
+                class="d-none btn btn-info position-absolute top-0 end-0 mt-1 me-1"
+                id="copy-json-code"
+                data-clipboard-target="#code-json">
+                Copy JSON
+            </button>
+            <pre id="code-json"></pre>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.8/clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="theme-converter.js"></script>
+</body>
+
+</html>
