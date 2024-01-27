@@ -1,7 +1,7 @@
 const BASE_URL = 'https://leetcode.com'
 const THEME_SWITCH = 'SWITCH_MONACO_THEME'
 const THEME_COMMAND = 'SET_MONACO_THEME'
-const THEME_KEY = 'LEETCODE_MONACO_THEME'
+const THEME_LOAD = 'LOAD_MONACO_THEME'
 const THEME_RESPONSE = 'SET_MONACO_THEME_RESPONSE'
 
 
@@ -12,11 +12,25 @@ function sendThemeCommand(themeName) {
     })
 }
 
+function sendLoadCommand() {
+    window.postMessage({
+        command: THEME_LOAD
+    })
+}
+
 function applyTheme(themeName, theme) {
     if (typeof monaco !== 'undefined') {
         monaco.editor.defineTheme(themeName, theme)
         monaco.editor.setTheme(themeName)
     }
+}
+
+function onLoad() {
+    if (typeof monaco !== 'undefined') {
+        sendLoadCommand()
+        return
+    }
+    setTimeout(onLoad, 100)
 }
 
 async function onMessage(event) {
@@ -40,3 +54,4 @@ async function onMessage(event) {
 
 
 window.addEventListener('message', onMessage)
+onLoad()

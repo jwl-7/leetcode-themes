@@ -3,6 +3,13 @@ async function getData(url) {
     return response.json()
 }
 
+function sendThemeCommand(themeName) {
+    window.postMessage({
+        command: THEME_COMMAND,
+        themeName: themeName
+    })
+}
+
 function sendThemeResponse(theme, themeName) {
     window.postMessage({
         command: THEME_RESPONSE,
@@ -19,6 +26,16 @@ async function storeTheme(themeName, themeBackground) {
 }
 
 async function onMessage(event) {
+    if (
+        event.origin === BASE_URL &&
+        event.data.command === THEME_LOAD
+    ) {
+        const { [THEME_KEY]: themeName } = await browser.storage.local.get(THEME_KEY)
+
+        if (themeName) {
+            sendThemeCommand(themeName)
+        }
+    }
     if (
         event.origin === BASE_URL &&
         event.data.command === THEME_COMMAND &&
