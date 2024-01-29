@@ -76,6 +76,7 @@ async function onLoad() {
     if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
         displayLoading()
         displayThemeName(themeName)
+        loadPopupDarkModeSwitch()
     } else {
         displayError()
     }
@@ -85,11 +86,28 @@ async function onThemeChange() {
     await setTheme(themeSelector.value)
 }
 
-function onPopupDarkModeChange(event) {
+async function onPopupDarkModeChange(event) {
     const checkbox = event.target
     const theme = checkbox.checked ? 'dark' : 'light'
 
     document.documentElement.setAttribute('data-theme', theme)
+
+    await browser.storage.local.set({
+        [POPUP_THEME_KEY]: theme
+    })
+}
+
+async function loadPopupDarkModeSwitch() {
+    const { [POPUP_THEME_KEY]: theme } = await browser.storage.local.get(POPUP_THEME_KEY)
+
+    if (!theme) {
+        await browser.storage.local.set({
+            [POPUP_THEME_KEY]: 'light'
+        })
+    } else if (theme === 'dark') {
+        popupDarkModeSwitch.checked = true
+        document.documentElement.setAttribute('data-theme', theme)
+    }
 }
 
 function onLeetcodeDarkModeChange(event) {
