@@ -1,9 +1,13 @@
 const popupMessage = document.getElementById('popup-message')
-const errorMessage = popupMessage.querySelector('#error-message')
-const loadingMessage = popupMessage.querySelector('#loading-message')
-const themeMessage = popupMessage.querySelector('#theme-message')
-const selectedTheme = themeMessage.querySelector('#selected-theme')
+const errorMessage = document.getElementById('error-message')
+const loadingMessage = document.getElementById('loading-message')
+const themeMessage = document.getElementById('theme-message')
+const selectedTheme = document.getElementById('selected-theme')
 const themeSelector = document.getElementById('theme-selector')
+const popupDarkModeSwitch = document.getElementById('popup-darkmode-switch')
+const leetcodeDarkModeSwitch = document.getElementById('leetcode-darkmode-switch')
+const leetcodeThemeSwitch = document.getElementById('leetcode-theme-switch')
+const leetcodeCodeResetSwitch = document.getElementById('leetcode-code-reset-switch')
 
 
 async function getActiveTab() {
@@ -81,6 +85,29 @@ async function onThemeChange() {
     await setTheme(themeSelector.value)
 }
 
+function onPopupDarkModeChange(event) {
+    const checkbox = event.target
+    const theme = checkbox.checked ? 'dark' : 'light'
+
+    document.documentElement.setAttribute('data-theme', theme)
+}
+
+function onLeetcodeDarkModeChange(event) {
+    return
+}
+
+function onLeetcodeThemeChange(event) {
+    return
+}
+
+function onLeetcodeCodeResetChange(event) {
+    return
+}
+
 
 document.addEventListener('DOMContentLoaded', onLoad)
 themeSelector.addEventListener('change', onThemeChange)
+popupDarkModeSwitch.addEventListener('change', onPopupDarkModeChange)
+leetcodeDarkModeSwitch.addEventListener('change', onLeetcodeDarkModeChange)
+leetcodeThemeSwitch.addEventListener('change', onLeetcodeThemeChange)
+leetcodeCodeResetSwitch.addEventListener('change', onLeetcodeCodeResetChange)

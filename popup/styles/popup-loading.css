@@ -1,0 +1,45 @@
+/*=============================================
+*           Popup Styles: aria-busy           *
+=============================================*/
+[aria-busy=true] {
+    cursor: progress;
+}
+
+[aria-busy=true]:not(input, select, textarea, html)::before {
+    animation: spinner 0.75s linear infinite;
+    border: 0.1875em solid currentColor;
+    border-radius: 1em;
+    border-right-color: transparent;
+    content: '';
+    display: inline-block;
+    height: 1em;
+    opacity: var(--loading-spinner-opacity);
+    vertical-align: text-bottom;
+    vertical-align: -0.125em;
+    width: 1em;
+}
+
+[aria-busy=true]:not(input, select, textarea, html):not(:empty)::before {
+    margin-left: 0;
+    margin-right: calc(var(--spacing) * 0.5);
+    margin-inline-start: 0;
+    margin-inline-end: calc(var(--spacing) * 0.5);
+}
+
+[aria-busy=true]:not(input, select, textarea, html):empty {
+    text-align: center;
+}
+
+button[aria-busy=true],
+input[type=submit][aria-busy=true],
+input[type=button][aria-busy=true],
+input[type=reset][aria-busy=true],
+a[aria-busy=true] {
+    pointer-events: none;
+}
+
+@keyframes spinner {
+    to {
+        transform: rotate(360deg);
+    }
+}

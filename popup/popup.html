@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <title>LeetCode Themes</title>
@@ -10,10 +10,47 @@
 </head>
 
 <body>
+<main class="container">
     <h2>LeetCode Themes</h2>
+    <hr />
+    <div id="toggle-switches-container" class="grid">
+        <div class="switch-grid grid">
+            <div>
+                <span>Enable Popup Dark Mode</span>
+            </div>
+            <div>
+                <input type="checkbox" id="popup-darkmode-switch" name="switch" role="switch">
+            </div>
+        </div>
+        <div class="switch-grid grid">
+            <div>
+                <span>Enable LeetCode Dark Mode</span>
+            </div>
+            <div>
+                <input type="checkbox" id="leetcode-darkmode-switch" name="switch" role="switch">
+            </div>
+        </div>
+        <div class="switch-grid grid">
+            <div>
+                <span>Enable LeetCode Editor Theme</span>
+            </div>
+            <div>
+                <input type="checkbox" id="leetcode-theme-switch" name="switch" role="switch">
+            </div>
+        </div>
+        <div class="switch-grid grid">
+            <div>
+                <span>Enable Auto Reset Code</span>
+            </div>
+            <div>
+                <input type="checkbox" id="leetcode-code-reset-switch" name="switch" role="switch">
+            </div>
+        </div>
+    </div>
+    <hr />
     <div id="popup-message">
         <h4 id="error-message"></h4>
-        <h4 id="loading-message">Loading...</h4>
+        <h4 id="loading-message" aria-busy="true">Loading...</h4>
         <h4 id="theme-message">Theme: <span id="selected-theme"></span></h4>
     </div>
     <div id="theme-selector-wrapper">
@@ -75,6 +112,7 @@
             <option value="zenburnesque">Zenburnesque</option>
         </select>
     </div>
+</main>
 </body>
 
 <script src="../content_scripts/constants.js"></script>

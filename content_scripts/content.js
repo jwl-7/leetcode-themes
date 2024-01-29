@@ -3,6 +3,7 @@ const THEME_SWITCH = 'SWITCH_MONACO_THEME'
 const THEME_COMMAND = 'SET_MONACO_THEME'
 const THEME_LOAD = 'LOAD_MONACO_THEME'
 const THEME_RESPONSE = 'SET_MONACO_THEME_RESPONSE'
+const DEFAULT_THEME_NAME = 'Dh'
 
 
 function sendThemeCommand(themeName) {
@@ -27,6 +28,7 @@ function applyTheme(themeName, theme) {
 
 function onLoad() {
     if (typeof monaco !== 'undefined') {
+        // monaco.editor.setTheme(DEFAULT_THEME_NAME)
         sendLoadCommand()
         return
     }

@@ -1,0 +1,68 @@
+/*=============================================
+*           Popup Styles: checkbox            *
+=============================================*/
+[type=checkbox] {
+    accent-color: var(--primary);
+    appearance: none;
+    border-width: var(--border-width);
+    cursor: pointer;
+    font-size: inherit;
+    height: 1.25em;
+    margin-inline-start: 0;
+    margin-inline-end: 0.375em;
+    margin-left: 0;
+    margin-right: 0.375em;
+    margin-top: -0.125em;
+    vertical-align: middle;
+    width: 1.25em;
+}
+
+[type=checkbox][role=switch] {
+    --background-color: var(--switch-background-color);
+    --border-color: var(--switch-background-color);
+    --border-width: 3px;
+    --color: var(--switch-color);
+    background-color: var(--background-color);
+    border: var(--border-width) solid var(--border-color);
+    border-radius: 1.25em;
+    height: 1.25em;
+    line-height: 1.25em;
+    width: 2.25em;
+}
+
+[type=checkbox][role=switch]:focus {
+    --background-color: var(--switch-background-color);
+    --border-color: var(--switch-background-color);
+    --box-shadow: 0 0 0 var(--outline-width) var(--form-element-focus-color);
+}
+
+[type=checkbox][role=switch]:before {
+    content: '';
+    background-color: var(--color);
+    border-radius: 50%;
+    display: block;
+    height: 100%;
+    transition: margin 0.1s ease-in-out;
+    width: calc(1.25em - var(--border-width) * 2);
+}
+
+[type=checkbox][role=switch]:checked {
+    --background-color: var(--switch-checked-background-color);
+    --border-color: var(--switch-checked-background-color);
+    background-image: none;
+}
+
+[type=checkbox][role=switch]:checked::before {
+    margin-inline-start: calc(1.125em - var(--border-width));
+    margin-left: calc(1.125em - var(--border-width));
+}
+
+[type=checkbox][role=switch][aria-invalid=false],
+[type=checkbox][role=switch]:checked[aria-invalid=false] {
+    --border-color: var(--form-element-valid-border-color);
+}
+
+[type=checkbox][role=switch][aria-invalid=true],
+[type=checkbox][role=switch]:checked[aria-invalid=true] {
+    --border-color: var(--form-element-invalid-border-color);
+}

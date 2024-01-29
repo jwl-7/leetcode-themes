@@ -1,0 +1,64 @@
+/*=============================================
+*          Popup Styles: typography           *
+=============================================*/
+b,
+strong {
+    font-weight: bolder;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    --font-weight: 700;
+    color: var(--heading-color);
+    font-family: var(--font-family-bold);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    margin-bottom: var(--typography-spacing-vertical);
+    margin-top: 0;
+}
+
+h1 {
+    --font-size: 2rem;
+}
+
+h2 {
+    --font-size: 1.75rem;
+}
+
+h3 {
+    --font-size: 1.5rem;
+}
+
+h4 {
+    --font-size: 1.25rem;
+}
+
+h5 {
+    --font-size: 1.125rem;
+}
+
+hr {
+    background-position: 50%;
+    background-image: linear-gradient(
+        90deg,
+        rgba(191, 191, 191, 0),
+        rgba(191, 191, 191, 0.5) 10%,
+        rgba(191, 191, 191, 1) 50%,
+        rgba(191, 191, 191, 0.5) 90%,
+        rgba(191, 191, 191, 0) 100%
+    );
+    border: none;
+    box-sizing: border-box;
+    height: 1px;
+    margin-left: -16px;
+    margin-right: -16px;
+    position: relative;
+}
+
+::selection {
+    background-color: var(--primary-focus);
+}

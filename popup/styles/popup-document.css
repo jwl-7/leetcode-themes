@@ -1,0 +1,31 @@
+/*=============================================
+*           Popup Styles: document            *
+=============================================*/
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+}
+
+::before,
+::after {
+    text-decoration: inherit;
+    vertical-align: inherit;
+}
+
+:where(:root) {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+    background-color: var(--background-color);
+    color: var(--color);
+    cursor: default;
+    font-family: var(--font-family);
+    font-size: var(--font-size);
+    font-weight: var(--font-weight);
+    line-height: var(--line-height);
+    overflow-wrap: break-word;
+    tab-size: 4;
+    text-rendering: optimizeLegibility;
+    text-size-adjust: 100%;
+}
