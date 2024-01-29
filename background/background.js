@@ -31,10 +31,12 @@ async function injectEditorBackgroundColor(oldThemeBackground, newThemeBackgroun
 }
 
 async function onLocalStorageChange(changes) {
-    const oldThemeBackground = changes[THEME_BACKGROUND_KEY].oldValue
-    const newThemeBackground = changes[THEME_BACKGROUND_KEY].newValue
+    if (THEME_BACKGROUND_KEY in changes) {
+        const oldThemeBackground = changes[THEME_BACKGROUND_KEY].oldValue
+        const newThemeBackground = changes[THEME_BACKGROUND_KEY].newValue
 
-    await injectEditorBackgroundColor(oldThemeBackground, newThemeBackground)
+        await injectEditorBackgroundColor(oldThemeBackground, newThemeBackground)
+    }
 }
 
 
