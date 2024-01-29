@@ -50,6 +50,25 @@ function sendThemeCommand(themeName) {
     })
 }
 
+function sendLeetCodeThemeCommand(theme) {
+    window.postMessage({
+        command: LEETCODE_THEME_COMMAND,
+        theme: theme
+    })
+}
+
+async function executeLeetCodeThemeCommand(theme) {
+    const [tab] = await getActiveTab()
+
+    if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
+        await browser.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: sendLeetCodeThemeCommand,
+            args: [theme]
+        })
+    }
+}
+
 async function executeThemeCommand(themeName) {
     const [tab] = await getActiveTab()
 
@@ -71,22 +90,36 @@ async function setTheme(themeName) {
 
 async function loadPopupThemeSwitch() {
     const { [POPUP_THEME_KEY]: theme } = await browser.storage.local.get(POPUP_THEME_KEY)
+    const htmlElement = document.documentElement
 
     if (!theme) {
         await browser.storage.local.set({ [POPUP_THEME_KEY]: 'light' })
     } else if (theme === 'dark') {
         popupThemeSwitch.checked = true
-        document.documentElement.setAttribute('data-theme', theme)
+        htmlElement.setAttribute('data-theme', theme)
     }
 }
 
 async function loadLeetCodeThemeSwitch() {
-    const { [LEETCODE_THEME_KEY]: theme } = await browser.storage.local.get(LEETCODE_THEME_KEY)
+    const theme = localStorage.getItem(LEETCODE_THEME_KEY)
+    const htmlElement = document.documentElement
+    const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light'
 
-    if (!theme) {
-        await browser.storage.local.set({ [LEETCODE_THEME_KEY]: 'light' })
-    } else if (theme === 'dark') {
+    if (theme === 'dark') {
         leetCodeThemeSwitch.checked = true
+    }
+    if (currentTheme !== theme) {
+        await executeLeetCodeThemeCommand(theme)
+    }
+}
+
+async function loadMonacoThemeSwitch() {
+    const { [ENABLE_MONACO_THEME_KEY]: enableTheme } = await browser.storage.local.get(ENABLE_MONACO_THEME_KEY)
+
+    if (!enableTheme) {
+        await browser.storage.local.set({ [ENABLE_MONACO_THEME_KEY]: false })
+    } else {
+        monacoThemeSwitch.checked = true
     }
 }
 
@@ -99,6 +132,7 @@ async function onLoad() {
         displayThemeName(themeName)
         await loadPopupThemeSwitch()
         await loadLeetCodeThemeSwitch()
+        await loadMonacoThemeSwitch()
     } else {
         displayError()
     }
@@ -120,11 +154,14 @@ async function onLeetCodeThemeChange(event) {
     const checkbox = event.target
     const theme = checkbox.checked ? 'dark' : 'light'
 
-    await browser.storage.local.set({ [LEETCODE_THEME_KEY]: theme })
+    await executeLeetCodeThemeCommand(theme)
 }
 
-function onMonacoThemeChange(event) {
-    return
+async function onMonacoThemeChange(event) {
+    const checkbox = event.target
+    const theme = checkbox.checked ? true : false
+
+    await browser.storage.local.set({ [ENABLE_MONACO_THEME_KEY]: theme })
 }
 
 function onLeetCodeResetChange(event) {

@@ -37,6 +37,36 @@ async function onLocalStorageChange(changes) {
 
         await injectEditorBackgroundColor(oldThemeBackground, newThemeBackground)
     }
+    if (ENABLE_MONACO_THEME_KEY in changes) {
+        const [tab] = await getActiveTab()
+        const { [MONACO_BACKGROUND_KEY]: themeBackground } = await browser.storage.local.get(MONACO_BACKGROUND_KEY)
+        const theme = localStorage.getItem(LEETCODE_THEME_KEY)
+        const enableTheme = changes[ENABLE_MONACO_THEME_KEY].newValue
+
+        if (!enableTheme) {
+            await browser.scripting.removeCSS({
+                target: { tabId: tab.id },
+                css: getCSS(themeBackground),
+                origin: 'USER'
+            })
+
+            if (theme === 'light') {
+                await browser.scripting.insertCSS({
+                    target: { tabId: tab.id },
+                    css: getCSS(LIGHT_THEME_EDITOR_BACKGROUND),
+                    origin: 'USER'
+                })
+                await browser.storage.local.set({[ MONACO_BACKGROUND_KEY]: LIGHT_THEME_EDITOR_BACKGROUND })
+            } else {
+                await browser.scripting.insertCSS({
+                    target: { tabId: tab.id },
+                    css: getCSS(DARK_THEME_EDITOR_BACKGROUND),
+                    origin: 'USER'
+                })
+                await browser.storage.local.set({[ MONACO_BACKGROUND_KEY]: DARK_THEME_EDITOR_BACKGROUND })
+            }
+        }
+    }
 }
 
 

@@ -10,6 +10,12 @@ function sendThemeCommand(themeName) {
     })
 }
 
+function sendDefaultThemeCommand() {
+    window.postMessage({
+        command: DEFAULT_THEME_COMMAND
+    })
+}
+
 function sendThemeResponse(theme, themeName) {
     window.postMessage({
         command: THEME_RESPONSE,
@@ -26,22 +32,28 @@ async function storeTheme(themeName, themeBackground) {
 }
 
 function setLeetCodeTheme(theme) {
-    const htmlElement = document.documentElement
-    const currentTheme = htmlElement.classList.contains('dark')
-        ? 'dark'
-        : 'light'
+    const storageEvent = new StorageEvent('storage', {
+        key: LEETCODE_THEME_KEY,
+        newValue: theme
+    })
 
-    if (theme !== currentTheme) {
-        htmlElement.classList.remove(currentTheme)
-        htmlElement.classList.add(theme)
-    }
+    localStorage.setItem(LEETCODE_THEME_KEY, theme)
+    window.dispatchEvent(storageEvent)
 }
 
 async function onLocalStorageChange(changes) {
-    if (LEETCODE_THEME_KEY in changes) {
-        const newLeetCodeTheme = changes[LEETCODE_THEME_KEY].newValue
+    if (ENABLE_MONACO_THEME_KEY in changes) {
+        const enableTheme = changes[ENABLE_MONACO_THEME_KEY].newValue
 
-        setLeetCodeTheme(newLeetCodeTheme)
+        if (!enableTheme) {
+            sendDefaultThemeCommand()
+        } else {
+            const { [MONACO_THEME_KEY]: themeName } = await browser.storage.local.get(MONACO_THEME_KEY)
+
+            if (themeName) {
+                sendThemeCommand(themeName)
+            }
+        }
     }
 }
 
@@ -51,15 +63,12 @@ async function onMessage(event) {
         event.data.command === THEME_LOAD
     ) {
         const { [MONACO_THEME_KEY]: themeName } = await browser.storage.local.get(MONACO_THEME_KEY)
-        const { [LEETCODE_THEME_KEY]: leetCodeTheme } = await browser.storage.local.get(LEETCODE_THEME_KEY)
+        const { [ENABLE_MONACO_THEME_KEY]: enableTheme } = await browser.storage.local.get(ENABLE_MONACO_THEME_KEY)
 
-        if (themeName) {
+        if (enableTheme && themeName) {
             sendThemeCommand(themeName)
-        }
-        if (leetCodeTheme) {
-            setLeetCodeTheme(leetCodeTheme)
         } else {
-            setLeetCodeTheme('light')
+            sendDefaultThemeCommand()
         }
     }
     if (
@@ -77,6 +86,14 @@ async function onMessage(event) {
 
         await storeTheme(themeName, themeBackground)
         sendThemeResponse(theme, rawThemeName)
+    }
+    if (
+        event.origin === BASE_URL &&
+        event.data.command === LEETCODE_THEME_COMMAND &&
+        event.data.theme
+    ) {
+        const theme = event.data.theme
+        setLeetCodeTheme(theme)
     }
 }
 
