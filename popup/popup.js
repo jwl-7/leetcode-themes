@@ -4,10 +4,10 @@ const loadingMessage = document.getElementById('loading-message')
 const themeMessage = document.getElementById('theme-message')
 const selectedTheme = document.getElementById('selected-theme')
 const themeSelector = document.getElementById('theme-selector')
-const popupDarkModeSwitch = document.getElementById('popup-darkmode-switch')
-const leetcodeDarkModeSwitch = document.getElementById('leetcode-darkmode-switch')
-const leetcodeThemeSwitch = document.getElementById('leetcode-theme-switch')
-const leetcodeCodeResetSwitch = document.getElementById('leetcode-code-reset-switch')
+const popupThemeSwitch = document.getElementById('popup-theme-switch')
+const monacoThemeSwitch = document.getElementById('monaco-theme-switch')
+const leetCodeThemeSwitch = document.getElementById('leetcode-theme-switch')
+const leetCodeResetSwitch = document.getElementById('leetcode-reset-switch')
 
 
 async function getActiveTab() {
@@ -71,12 +71,12 @@ async function setTheme(themeName) {
 
 async function onLoad() {
     const [tab] = await getActiveTab()
-    const { [THEME_KEY]: themeName } = await browser.storage.local.get(THEME_KEY)
+    const { [MONACO_THEME_KEY]: themeName } = await browser.storage.local.get(MONACO_THEME_KEY)
 
     if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
         displayLoading()
         displayThemeName(themeName)
-        loadPopupDarkModeSwitch()
+        loadPopupThemeSwitch()
     } else {
         displayError()
     }
@@ -86,7 +86,7 @@ async function onThemeChange() {
     await setTheme(themeSelector.value)
 }
 
-async function onPopupDarkModeChange(event) {
+async function onPopupThemeChange(event) {
     const checkbox = event.target
     const theme = checkbox.checked ? 'dark' : 'light'
 
@@ -97,7 +97,7 @@ async function onPopupDarkModeChange(event) {
     })
 }
 
-async function loadPopupDarkModeSwitch() {
+async function loadPopupThemeSwitch() {
     const { [POPUP_THEME_KEY]: theme } = await browser.storage.local.get(POPUP_THEME_KEY)
 
     if (!theme) {
@@ -105,27 +105,27 @@ async function loadPopupDarkModeSwitch() {
             [POPUP_THEME_KEY]: 'light'
         })
     } else if (theme === 'dark') {
-        popupDarkModeSwitch.checked = true
+        popupThemeSwitch.checked = true
         document.documentElement.setAttribute('data-theme', theme)
     }
 }
 
-function onLeetcodeDarkModeChange(event) {
+function onLeetCodeThemeChange(event) {
     return
 }
 
-function onLeetcodeThemeChange(event) {
+function onMonacoThemeChange(event) {
     return
 }
 
-function onLeetcodeCodeResetChange(event) {
+function onLeetCodeResetChange(event) {
     return
 }
 
 
 document.addEventListener('DOMContentLoaded', onLoad)
 themeSelector.addEventListener('change', onThemeChange)
-popupDarkModeSwitch.addEventListener('change', onPopupDarkModeChange)
-leetcodeDarkModeSwitch.addEventListener('change', onLeetcodeDarkModeChange)
-leetcodeThemeSwitch.addEventListener('change', onLeetcodeThemeChange)
-leetcodeCodeResetSwitch.addEventListener('change', onLeetcodeCodeResetChange)
+popupThemeSwitch.addEventListener('change', onPopupThemeChange)
+leetCodeThemeSwitch.addEventListener('change', onLeetCodeThemeChange)
+monacoThemeSwitch.addEventListener('change', onMonacoThemeChange)
+leetCodeResetSwitch.addEventListener('change', onLeetCodeResetChange)

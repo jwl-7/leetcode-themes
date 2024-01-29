@@ -20,8 +20,8 @@ function sendThemeResponse(theme, themeName) {
 
 async function storeTheme(themeName, themeBackground) {
     await browser.storage.local.set({
-        [THEME_KEY]: themeName,
-        [THEME_BACKGROUND_KEY]: themeBackground
+        [MONACO_THEME_KEY]: themeName,
+        [MONACO_BACKGROUND_KEY]: themeBackground
     })
 }
 
@@ -30,7 +30,7 @@ async function onMessage(event) {
         event.origin === BASE_URL &&
         event.data.command === THEME_LOAD
     ) {
-        const { [THEME_KEY]: themeName } = await browser.storage.local.get(THEME_KEY)
+        const { [MONACO_THEME_KEY]: themeName } = await browser.storage.local.get(MONACO_THEME_KEY)
 
         if (themeName) {
             sendThemeCommand(themeName)
