@@ -69,6 +69,27 @@ async function setTheme(themeName) {
     displayThemeName(themeDisplayName)
 }
 
+async function loadPopupThemeSwitch() {
+    const { [POPUP_THEME_KEY]: theme } = await browser.storage.local.get(POPUP_THEME_KEY)
+
+    if (!theme) {
+        await browser.storage.local.set({ [POPUP_THEME_KEY]: 'light' })
+    } else if (theme === 'dark') {
+        popupThemeSwitch.checked = true
+        document.documentElement.setAttribute('data-theme', theme)
+    }
+}
+
+async function loadLeetCodeThemeSwitch() {
+    const { [LEETCODE_THEME_KEY]: theme } = await browser.storage.local.get(LEETCODE_THEME_KEY)
+
+    if (!theme) {
+        await browser.storage.local.set({ [LEETCODE_THEME_KEY]: 'light' })
+    } else if (theme === 'dark') {
+        leetCodeThemeSwitch.checked = true
+    }
+}
+
 async function onLoad() {
     const [tab] = await getActiveTab()
     const { [MONACO_THEME_KEY]: themeName } = await browser.storage.local.get(MONACO_THEME_KEY)
@@ -76,7 +97,8 @@ async function onLoad() {
     if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
         displayLoading()
         displayThemeName(themeName)
-        loadPopupThemeSwitch()
+        await loadPopupThemeSwitch()
+        await loadLeetCodeThemeSwitch()
     } else {
         displayError()
     }
@@ -91,27 +113,14 @@ async function onPopupThemeChange(event) {
     const theme = checkbox.checked ? 'dark' : 'light'
 
     document.documentElement.setAttribute('data-theme', theme)
-
-    await browser.storage.local.set({
-        [POPUP_THEME_KEY]: theme
-    })
+    await browser.storage.local.set({ [POPUP_THEME_KEY]: theme })
 }
 
-async function loadPopupThemeSwitch() {
-    const { [POPUP_THEME_KEY]: theme } = await browser.storage.local.get(POPUP_THEME_KEY)
+async function onLeetCodeThemeChange(event) {
+    const checkbox = event.target
+    const theme = checkbox.checked ? 'dark' : 'light'
 
-    if (!theme) {
-        await browser.storage.local.set({
-            [POPUP_THEME_KEY]: 'light'
-        })
-    } else if (theme === 'dark') {
-        popupThemeSwitch.checked = true
-        document.documentElement.setAttribute('data-theme', theme)
-    }
-}
-
-function onLeetCodeThemeChange(event) {
-    return
+    await browser.storage.local.set({ [LEETCODE_THEME_KEY]: theme })
 }
 
 function onMonacoThemeChange(event) {

@@ -25,15 +25,41 @@ async function storeTheme(themeName, themeBackground) {
     })
 }
 
+function setLeetCodeTheme(theme) {
+    const htmlElement = document.documentElement
+    const currentTheme = htmlElement.classList.contains('dark')
+        ? 'dark'
+        : 'light'
+
+    if (theme !== currentTheme) {
+        htmlElement.classList.remove(currentTheme)
+        htmlElement.classList.add(theme)
+    }
+}
+
+async function onLocalStorageChange(changes) {
+    if (LEETCODE_THEME_KEY in changes) {
+        const newLeetCodeTheme = changes[LEETCODE_THEME_KEY].newValue
+
+        setLeetCodeTheme(newLeetCodeTheme)
+    }
+}
+
 async function onMessage(event) {
     if (
         event.origin === BASE_URL &&
         event.data.command === THEME_LOAD
     ) {
         const { [MONACO_THEME_KEY]: themeName } = await browser.storage.local.get(MONACO_THEME_KEY)
+        const { [LEETCODE_THEME_KEY]: leetCodeTheme } = await browser.storage.local.get(LEETCODE_THEME_KEY)
 
         if (themeName) {
             sendThemeCommand(themeName)
+        }
+        if (leetCodeTheme) {
+            setLeetCodeTheme(leetCodeTheme)
+        } else {
+            setLeetCodeTheme('light')
         }
     }
     if (
@@ -55,4 +81,5 @@ async function onMessage(event) {
 }
 
 
+browser.storage.local.onChanged.addListener(onLocalStorageChange)
 window.addEventListener('message', onMessage)
