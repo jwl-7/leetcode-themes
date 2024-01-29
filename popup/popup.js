@@ -63,7 +63,7 @@ async function executeThemeCommand(themeName) {
 }
 
 async function setTheme(themeName) {
-    const themeDisplayName = formatThemeDisplayName(themeSelector.value)
+    const themeDisplayName = formatThemeDisplayName(themeName)
 
     await executeThemeCommand(themeDisplayName)
     displayThemeName(themeDisplayName)
