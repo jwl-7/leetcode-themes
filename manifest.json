@@ -19,7 +19,8 @@
     "background": {
         "scripts": [
             "content_scripts/constants.js",
-            "background/background.js"
+            "background/background.js",
+            "background/storage.js"
         ]
     },
     "content_scripts": [

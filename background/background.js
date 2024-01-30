@@ -69,5 +69,13 @@ async function onLocalStorageChange(changes) {
     }
 }
 
+async function onInstalled(details) {
+    if (details.reason === 'install' || details.reason === 'update') {
+        await initializeStorage()
+        console.log('storage', browser.storage.local)
+    }
+}
 
+
+browser.runtime.onInstalled.addListener(onInstalled)
 browser.storage.local.onChanged.addListener(onLocalStorageChange)
