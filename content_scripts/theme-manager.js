@@ -95,6 +95,66 @@ async function onMessage(event) {
         const theme = event.data.theme
         setLeetCodeTheme(theme)
     }
+    if (
+        event.origin === BASE_URL &&
+        event.data.command === LEETCODE_RESET_COMMAND &&
+        typeof event.data.enabled !== undefined
+    ) {
+        const enabled = event.data.enabled
+
+        if (enabled) {
+            await resetCode()
+        }
+
+        browser.storage.local.set({ [LEETCODE_RESET_KEY]: enabled })
+    }
+}
+
+async function waitForElement(selector, delay=100, limit=20) {
+    for (let wait = 1; wait <= limit; wait++) {
+        const element = document.querySelector(selector)
+
+        if (element) {
+            return element
+        }
+
+        await new Promise(resolve => setTimeout(resolve, delay))
+    }
+    throw new Error(`Can't find '${selector}' element!`)
+}
+
+async function resetCode() {
+    const resetButtonSelector = '[data-icon="arrow-rotate-left"]'
+    const resetConfirmModalSelector = '.z-modal[role="dialog"]'
+    const resetButtonSVG = await waitForElement(resetButtonSelector)
+
+    if (resetButtonSVG) {
+        const resetButton = findParentButton(resetButtonSVG)
+
+        if (resetButton) {
+            resetButton.click()
+            const resetConfirmModal = await waitForElement(resetConfirmModalSelector)
+
+            if (resetConfirmModal) {
+                const buttons = resetConfirmModal.querySelectorAll('button')
+
+                for (const button of buttons) {
+                    if (button.textContent.trim() === 'Confirm') {
+                        button.click()
+                        return
+                    }
+                }
+            }
+        }
+    }
+}
+
+function findParentButton(element) {
+    return element && element.tagName === 'BUTTON'
+        ? element
+        : element
+        ? findParentButton(element.parentElement)
+        : null
 }
 
 

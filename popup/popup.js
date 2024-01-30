@@ -105,11 +105,13 @@ async function loadLeetCodeThemeSwitch() {
     const htmlElement = document.documentElement
     const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light'
 
-    if (theme === 'dark') {
-        leetCodeThemeSwitch.checked = true
-    }
+    console.log('theme', localStorage)
+    console.log('currentTheme', currentTheme)
     if (currentTheme !== theme) {
         await executeLeetCodeThemeCommand(theme)
+    }
+    if (theme === 'dark') {
+        leetCodeThemeSwitch.checked = true
     }
 }
 
@@ -117,9 +119,18 @@ async function loadMonacoThemeSwitch() {
     const { [ENABLE_MONACO_THEME_KEY]: enableTheme } = await browser.storage.local.get(ENABLE_MONACO_THEME_KEY)
 
     if (!enableTheme) {
-        await browser.storage.local.set({ [ENABLE_MONACO_THEME_KEY]: false })
+        // await browser.storage.local.set({ [ENABLE_MONACO_THEME_KEY]: false })
     } else {
         monacoThemeSwitch.checked = true
+    }
+}
+
+async function loadLeetCodeResetSwitch() {
+    const { [LEETCODE_RESET_KEY]: enabled } = await browser.storage.local.get(LEETCODE_RESET_KEY)
+
+    if (enabled) {
+        leetCodeResetSwitch.checked = true
+        // await executeLeetCodeResetCommand(enabled)
     }
 }
 
@@ -133,6 +144,7 @@ async function onLoad() {
         await loadPopupThemeSwitch()
         await loadLeetCodeThemeSwitch()
         await loadMonacoThemeSwitch()
+        await loadLeetCodeResetSwitch()
     } else {
         displayError()
     }
@@ -164,8 +176,30 @@ async function onMonacoThemeChange(event) {
     await browser.storage.local.set({ [ENABLE_MONACO_THEME_KEY]: theme })
 }
 
-function onLeetCodeResetChange(event) {
-    return
+async function onLeetCodeResetChange(event) {
+    const checkbox = event.target
+    const resetEnabled = checkbox.checked ? true : false
+
+    await executeLeetCodeResetCommand(resetEnabled)
+}
+
+async function executeLeetCodeResetCommand(enabled) {
+    const [tab] = await getActiveTab()
+
+    if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
+        await browser.scripting.executeScript({
+            target: { tabId: tab.id },
+            func: sendLeetCodeResetCommand,
+            args: [enabled]
+        })
+    }
+}
+
+function sendLeetCodeResetCommand(enabled) {
+    window.postMessage({
+        command: LEETCODE_RESET_COMMAND,
+        enabled: enabled
+    })
 }
 
 
