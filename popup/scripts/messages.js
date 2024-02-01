@@ -18,11 +18,3 @@ function displayThemeName(themeName) {
     themeMessage.style.display = 'block'
     selectedTheme.innerHTML = themeName ?? 'None'
 }
-
-function displayError() {
-    errorMessage.style.display = 'block'
-    loadingMessage.style.display = 'none'
-    themeMessage.style.display = 'none'
-    themeSelector.disabled = true
-    errorMessage.innerHTML = 'LeetCode editor not detected'
-}

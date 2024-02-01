@@ -1,20 +1,4 @@
 async function onLoad() {
-    // const [tab] = await getActiveTab()
-
-    // if (tab && tab.url && tab.url.startsWith(LEETCODE_URL)) {
-    //     displayLoading()
-    //     await loadThemeName()
-    //     await loadPopupThemeSwitch()
-    //     await loadMonacoThemeSwitch()
-    //     await loadLeetCodeThemeSwitch()
-    //     await loadLeetCodeResetSwitch()
-    // } else {
-    //     displayError()
-    //     popupThemeSwitch.disabled = true
-    //     leetCodeThemeSwitch.disabled = true
-    //     leetCodeResetSwitch.disabled = true
-    //     monacoThemeSwitch.disabled = true
-    // }
     displayLoading()
     await loadThemeName()
     await loadPopupThemeSwitch()
