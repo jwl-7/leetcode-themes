@@ -18,18 +18,25 @@
     },
     "background": {
         "scripts": [
-            "content_scripts/constants.js",
+            "util/constants.js",
+            "util/utils.js",
+            "util/storage.js",
             "background/background.js",
-            "background/storage.js"
+            "background/theme-handlers.js",
+            "background/theme-manager.js",
+            "background/inject-theme-background.js"
         ]
     },
     "content_scripts": [
         {
             "matches": ["https://leetcode.com/problems/*"],
             "js": [
-                "content_scripts/constants.js",
-                "content_scripts/theme-manager.js",
-                "content_scripts/inject.js"
+                "util/constants.js",
+                "util/utils.js",
+                "util/storage.js",
+                "content_scripts/inject.js",
+                "content_scripts/reset-code.js",
+                "content_scripts/load.js"
             ]
         }
     ],

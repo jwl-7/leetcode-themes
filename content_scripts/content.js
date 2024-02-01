@@ -1,72 +1,56 @@
 const BASE_URL = 'https://leetcode.com'
-const THEME_SWITCH = 'SWITCH_MONACO_THEME'
-const THEME_COMMAND = 'SET_MONACO_THEME'
-const DEFAULT_THEME_COMMAND = 'SET_DEFAULT_MONACO_THEME'
-const THEME_LOAD = 'LOAD_MONACO_THEME'
-const THEME_RESPONSE = 'SET_MONACO_THEME_RESPONSE'
+const MONACO_THEME_COMMAND = 'SET_MONACO_THEME'
+const DEFAULT_MONACO_THEME_COMMAND = 'SET_DEFAULT_MONACO_THEME'
+const LEETCODE_THEME_COMMAND = 'SET_LEETCODE_THEME'
 const LEETCODE_THEME_KEY = 'lc-dark-side'
-const DEFAULT_THEME_NAME = ''
+const DEFAULT_MONACO_THEME = 'vs'
+const DEFAULT_MONACO_DARK_THEME = 'vs-dark'
 
 
-function sendThemeCommand(themeName) {
-    window.postMessage({
-        command: THEME_COMMAND,
-        themeName: themeName
-    })
-}
-
-function sendLoadCommand() {
-    window.postMessage({
-        command: THEME_LOAD
-    })
-}
-
-function applyTheme(themeName, theme) {
+function applyTheme(message) {
     if (typeof monaco !== 'undefined') {
+        const theme = message.data.theme
+        const themeName = message.data.themeName
+
         monaco.editor.defineTheme(themeName, theme)
         monaco.editor.setTheme(themeName)
     }
 }
 
-function applyDefaultTheme() {
+function applyDefaultTheme(message) {
     if (typeof monaco !== 'undefined') {
-        monaco.editor.setTheme(DEFAULT_THEME_NAME)
+        const theme = message.data.theme === 'light'
+            ? DEFAULT_MONACO_THEME
+            : DEFAULT_MONACO_DARK_THEME
+
+        monaco.editor.setTheme(theme)
     }
 }
 
-function onLoad() {
-    if (typeof monaco !== 'undefined') {
-        sendLoadCommand()
-        return
-    }
-    setTimeout(onLoad, 100)
+function applyLeetCodeTheme(message) {
+    const theme = message.data.theme
+    const storageEvent = new StorageEvent('storage', {
+        key: LEETCODE_THEME_KEY,
+        newValue: theme
+    })
+
+    localStorage.setItem(LEETCODE_THEME_KEY, theme)
+    window.dispatchEvent(storageEvent)
 }
 
-async function onMessage(event) {
-    if (
-        event.origin === BASE_URL &&
-        event.data.command &&
-        event.data.theme ||
-        event.data.themeName
-    ) {
-        const theme = event.data.theme
-        const themeName = event.data.themeName
-
-        if (event.data.command === THEME_SWITCH) {
-            sendThemeCommand(themeName)
+function onMessage(message) {
+    if (message.origin === BASE_URL) {
+        if (message.data.command === MONACO_THEME_COMMAND) {
+            applyTheme(message)
         }
-        if (event.data.command === THEME_RESPONSE) {
-            applyTheme(themeName, theme)
+        if (message.data.command === LEETCODE_THEME_COMMAND) {
+            applyLeetCodeTheme(message)
         }
-    }
-    if (
-        event.origin === BASE_URL &&
-        event.data.command === DEFAULT_THEME_COMMAND
-    ) {
-        applyDefaultTheme()
+        if (message.data.command === DEFAULT_MONACO_THEME_COMMAND) {
+            applyDefaultTheme(message)
+        }
     }
 }
 
 
 window.addEventListener('message', onMessage)
-onLoad()
