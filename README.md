@@ -7,7 +7,9 @@ a firefox browser extension for customizing LeetCode editor
 - Enable LeetCode Dark Mode - Toggle LeetCode light/dark theme
 - Enable LeetCode Editor Theme - Toggle LeetCode Editor theme on/off
 - Enable Auto Reset Code - Toggle auto reset code on initial load
-- Internal tool for converting VS Code theme -> Monaco theme
+
+## Theme Converter
+- Use the [theme converter](https://jwl-7.github.io/leetcode-themes/) for converting VS Code theme -> Monaco theme
 
 ## Support
 - This browser extension is exclusively for Mozilla Firefox and the LeetCode 2023 Dynamic Layout
