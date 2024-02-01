@@ -12,7 +12,8 @@ a firefox browser extension for customizing LeetCode editor
 - Use the [theme converter](https://jwl-7.github.io/leetcode-themes/) for converting VS Code theme -> Monaco theme
 
 ## Support
-- This browser extension is exclusively for Mozilla Firefox and the LeetCode 2023 Dynamic Layout
+- Latest version of Mozilla FireFox 122.0+
+- LeetCode 2023 Dynamic Layout
 
 ## Dev Setup
 - Install web-ext: `npm install --global web-ext`
