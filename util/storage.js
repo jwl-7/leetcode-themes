@@ -1,11 +1,11 @@
 async function initializeStorage() {
     const DEFAULTS = {
-        POPUP_THEME_KEY: 'light',
-        LEETCODE_THEME_KEY: 'light',
-        LEETCODE_RESET_KEY: false,
-        ENABLE_MONACO_THEME_KEY: false,
-        MONACO_THEME_KEY: 'Nord',
-        MONACO_BACKGROUND_KEY: '#2E3440'
+        [POPUP_THEME_KEY]: 'light',
+        [LEETCODE_THEME_KEY]: 'light',
+        [LEETCODE_RESET_KEY]: false,
+        [ENABLE_MONACO_THEME_KEY]: false,
+        [MONACO_THEME_KEY]: 'Nord',
+        [MONACO_BACKGROUND_KEY]: '#2E3440'
     }
 
     try {

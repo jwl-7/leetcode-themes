@@ -16,5 +16,5 @@ function displayThemeName(themeName) {
     errorMessage.style.display = 'none'
     loadingMessage.style.display = 'none'
     themeMessage.style.display = 'block'
-    selectedTheme.innerHTML = themeName ?? 'None'
+    selectedTheme.innerHTML = themeName
 }
