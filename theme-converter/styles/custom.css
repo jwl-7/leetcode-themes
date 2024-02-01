@@ -1,0 +1,68 @@
+@media only screen and (prefers-color-scheme: dark) {
+    :root:not([data-theme]) {
+        --background-color: #1a1a1a;
+        --card-background-color: #282828;
+    }
+}
+
+[data-theme=dark] {
+    --background-color: #1a1a1a;
+    --card-background-color: #282828;
+}
+
+a[role="button"] {
+    width: 100%;
+}
+
+.hidden {
+    display: none;
+}
+
+.copy {
+    padding: 2px 12px;
+    width: auto;
+}
+
+.copy-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: auto;
+}
+
+.copy-container span,
+.copy-container button {
+    margin-bottom: 4px;
+}
+
+#theme-switch-container {
+    position: relative;
+    text-align: center;
+}
+
+#main-title-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#main-title {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+}
+
+#description {
+    text-align: center;
+}
+
+#error-alert {
+    --primary: #e53935;
+    --primary-hover: #f44336;
+    --primary-focus: rgba(229, 57, 53, 0.25);
+}
+
+#download {
+    --primary: #7cb342;
+    --primary-hover: #8bc34a;
+    --primary-focus: rgba(124, 179, 66, 0.25);
+}
