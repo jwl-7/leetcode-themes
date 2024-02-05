@@ -7,8 +7,8 @@
     --border-radius: 0.25rem;
     --border-width: 1px;
     --error-message-color: #e53935;
-    --font-family: 'Segoe UI', sans-serif;
-    --font-family-bold: 'Segoe UI Semibold';
+    --font-family: 'Segoe UI', 'Roboto', 'Ubuntu', 'Noto Sans', sans-serif;
+    --font-family-bold: 'Segoe UI Semibold', 'Roboto Medium', 'Ubuntu', 'Noto Sans', sans-serif;
     --font-size: 16px;
     --font-weight: 400;
     --form-element-active-border-color: var(--primary);
