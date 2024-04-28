@@ -1,6 +1,7 @@
 
 const BASE_URL = 'https://leetcode.com'
 const LEETCODE_URL = 'https://leetcode.com/problems'
+const EXPLORE_URL = 'https://leetcode.com/explore/'
 
 const POPUP_THEME_COMMAND = 'SET_POPUP_THEME'
 const LEETCODE_THEME_COMMAND = 'SET_LEETCODE_THEME'
