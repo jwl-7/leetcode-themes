@@ -1,6 +1,6 @@
 # leetcode-themes
 a firefox browser extension for customizing LeetCode editor
-[![leetcode-themes.png](https://i.imgur.com/WW3otB0.png)](https://imgur.com/WW3otB0)
+![leetcode-themes.png](https://github.com/user-attachments/assets/d478dd61-450c-438f-91ab-63476e3d2dab)
 
 ## Features
 - Enable Popup Dark Mode - Toggle Popup light/dark theme
